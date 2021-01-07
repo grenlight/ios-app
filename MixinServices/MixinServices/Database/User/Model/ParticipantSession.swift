@@ -15,8 +15,7 @@ public struct ParticipantSession {
     public let createdAt: String
     public let publicKey: String?
     
-    // FIXME: Remove that default value of publicKey
-    public init(conversationId: String, userId: String, sessionId: String, sentToServer: Int?, createdAt: String, publicKey: String? = nil) {
+    public init(conversationId: String, userId: String, sessionId: String, sentToServer: Int?, createdAt: String, publicKey: String?) {
         self.conversationId = conversationId
         self.userId = userId
         self.sessionId = sessionId
@@ -40,6 +39,13 @@ extension ParticipantSession {
     
     public struct Sent: Codable, MixinFetchableRecord {
         
+        public enum CodingKeys: String, CodingKey {
+            case conversationId = "conversation_id"
+            case userId = "user_id"
+            case sessionId = "session_id"
+            case sentToServer = "sent_to_server"
+        }
+        
         public let conversationId: String
         public let userId: String
         public let sessionId: String
@@ -57,12 +63,20 @@ extension ParticipantSession {
                                userId: userId,
                                sessionId: sessionId,
                                sentToServer: sentToServer,
-                               createdAt: Date().toUTCString())
+                               createdAt: Date().toUTCString(),
+                               publicKey: nil)
         }
         
     }
     
     public struct Key: Codable, MixinFetchableRecord {
+        
+        public enum CodingKeys: String, CodingKey {
+            case conversationId = "conversation_id"
+            case userId = "user_id"
+            case sessionId = "session_id"
+            case publicKey = "public_key"
+        }
         
         public let conversationId: String
         public let userId: String
